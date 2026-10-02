@@ -1,131 +1,56 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
-import { ThemeProvider, CssBaseline, Box } from "@mui/material";
-import { HelmetProvider } from "react-helmet-async";
-import { theme } from "./theme";
-import "./App.css";
-import React, { useEffect, Suspense, lazy } from "react";
-import PublicHeader from "./components/Header/PublicHeader";
-import Footer from "./components/Footer/Footer";
-import BrandPageLoader from "./components/common/BrandPageLoader";
-import HomeBackgroundMusic from "./components/common/HomeBackgroundMusic";
+import { useCallback, useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { clearSession, loadSession, saveSession } from "./auth.js";
+import AppShell from "./layout/AppShell.jsx";
+import Login from "./pages/Login/Login.jsx";
+import Home from "./pages/Home.jsx";
+import Users from "./pages/Users.jsx";
+import Settings from "./pages/Settings.jsx";
 
-const Home = lazy(() => import("./pages/Home"));
-const Team = lazy(() => import("./pages/Team"));
-const MarketplaceLogin = lazy(() => import("./pages/MarketplaceLogin"));
-const AdmissionApplication = lazy(() => import("./pages/AdmissionApplication"));
-const MeetOurTeam = lazy(() => import("./pages/MeetOurTeam"));
-const News = lazy(() => import("./pages/News"));
-const NewsDetail = lazy(() => import("./pages/NewsDetail"));
-const Brochures = lazy(() => import("./pages/Brochures"));
-const ProgrammeDetail = lazy(() => import("./pages/ProgrammeDetail"));
-const StudentPortal = lazy(() => import("./pages/StudentPortal"));
+export default function App() {
+  const [session, setSession] = useState(loadSession);
 
-function ScrollToTop() {
-  const { pathname } = useLocation();
+  const handleLogin = useCallback((next) => {
+    saveSession(next);
+    setSession(next);
+  }, []);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+  const handleSignOut = useCallback(() => {
+    clearSession();
+    setSession(null);
+  }, []);
 
-  return null;
-}
-
-function AppLayout() {
-  const location = useLocation();
-  const hideHeader =
-    location.pathname === "/login" || location.pathname.startsWith("/student");
+  const handleUserUpdate = useCallback((user) => {
+    setSession((prev) => {
+      if (!prev) return prev;
+      const next = { ...prev, user };
+      saveSession(next);
+      return next;
+    });
+  }, []);
 
   return (
-    <>
-      <ScrollToTop />
-      <HomeBackgroundMusic />
-      {!hideHeader && <PublicHeader />}
-      <Box component="main" sx={{ flex: 1, width: "100%" }}>
-        <Suspense fallback={<BrandPageLoader />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route
-              path="/about-us"
-              element={
-                <>
-                  <Team />
-                  <Footer />
-                </>
-              }
-            />
-            <Route path="/team" element={<Navigate to="/about-us" replace />} />
-            <Route
-              path="/meet-our-team"
-              element={
-                <>
-                  <MeetOurTeam />
-                </>
-              }
-            />
-            <Route
-              path="/news"
-              element={
-                <>
-                  <News />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/news/:slug"
-              element={
-                <>
-                  <NewsDetail />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/brochures"
-              element={
-                <>
-                  <Brochures />
-                  <Footer />
-                </>
-              }
-            />
-            <Route path="/login" element={<MarketplaceLogin />} />
-            <Route path="/student" element={<StudentPortal />} />
-            <Route path="/student/timetable" element={<StudentPortal />} />
-            <Route path="/student/timetable/day/:dateKey" element={<StudentPortal />} />
-            <Route path="/student/transcript" element={<StudentPortal />} />
-            <Route path="/student/fees" element={<StudentPortal />} />
-            <Route path="/student/library" element={<StudentPortal />} />
-            <Route path="/student/church" element={<StudentPortal />} />
-            <Route path="/student/programme" element={<StudentPortal />} />
-            <Route path="/student/settings" element={<StudentPortal />} />
-            <Route path="/admission/apply" element={<AdmissionApplication />} />
-            <Route path="/programmes/:id" element={<ProgrammeDetail />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
-      </Box>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/login"
+          element={session ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />}
+        />
+        <Route
+          element={
+            session ? (
+              <AppShell session={session} onSignOut={handleSignOut} onUserUpdate={handleUserUpdate} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        >
+          <Route index element={<Home />} />
+          <Route path="users" element={<Users />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-function App() {
-  return (
-    <HelmetProvider>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <CssBaseline />
-          <AppLayout />
-        </Router>
-      </ThemeProvider>
-    </HelmetProvider>
-  );
-}
-
-export default App;
