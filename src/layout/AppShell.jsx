@@ -6,6 +6,7 @@ import "./AppShell.css";
 
 const NAV_ITEMS = [
   { to: "/", label: "Home", icon: <HomeIcon />, end: true },
+  { to: "/shops", label: "Shops", icon: <ShopIcon /> },
   { to: "/users", label: "Users", icon: <UsersIcon /> },
   { to: "/settings", label: "Settings", icon: <SettingsIcon /> },
 ];
@@ -190,6 +191,15 @@ function HomeIcon() {
   return (
     <svg {...svgProps}>
       <path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1v-8.5Z" />
+    </svg>
+  );
+}
+
+function ShopIcon() {
+  return (
+    <svg {...svgProps}>
+      <path d="M4 9.5 5.5 4h13L20 9.5a2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1-5 0Z" />
+      <path d="M5 12v8h14v-8M10 20v-5h4v5" />
     </svg>
   );
 }

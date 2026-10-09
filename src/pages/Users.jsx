@@ -417,7 +417,7 @@ function pageItems(page, totalPages) {
   return items;
 }
 
-function Pager({ pagination, onPage, onPageSize }) {
+export function Pager({ pagination, onPage, onPageSize, sizes = PAGE_SIZES }) {
   const { page, limit, total, totalPages } = pagination;
   const hasPrev = pagination.hasPrevPage ?? page > 1;
   const hasNext = pagination.hasNextPage ?? page < totalPages;
@@ -435,7 +435,7 @@ function Pager({ pagination, onPage, onPageSize }) {
           <span>Rows</span>
           <span className="select select--sm">
             <select value={limit} onChange={(event) => onPageSize(Number(event.target.value))} aria-label="Rows per page">
-              {PAGE_SIZES.map((size) => (
+              {sizes.map((size) => (
                 <option key={size} value={size}>
                   {size}
                 </option>
@@ -499,7 +499,7 @@ function Pager({ pagination, onPage, onPageSize }) {
   );
 }
 
-function SearchBox({ value, onSearch, placeholder }) {
+export function SearchBox({ value, onSearch, placeholder }) {
   const [text, setText] = useState(value);
 
   useEffect(() => {
@@ -599,7 +599,7 @@ function UserTable({ rows, me }) {
   );
 }
 
-function RoleTabs({ tabs, counts, activeId, onSelect }) {
+export function RoleTabs({ tabs, counts, activeId, onSelect, label = "User roles" }) {
   const trackRef = useRef(null);
   const tabRefs = useRef({});
   const [edges, setEdges] = useState({ overflow: false, prev: false, next: false });
@@ -687,7 +687,7 @@ function RoleTabs({ tabs, counts, activeId, onSelect }) {
         <ArrowIcon direction="left" />
       </button>
 
-      <div className="role-tabs__track" ref={trackRef} role="tablist" aria-label="User roles" onKeyDown={onKeyDown}>
+      <div className="role-tabs__track" ref={trackRef} role="tablist" aria-label={label} onKeyDown={onKeyDown}>
         {tabs.map((tab) => {
           const selected = tab.id === activeId;
           return (
@@ -707,7 +707,7 @@ function RoleTabs({ tabs, counts, activeId, onSelect }) {
             >
               {tab.icon}
               {tab.label}
-              {counts && <span className="role-tab__count">{numberFmt.format(counts[tab.id])}</span>}
+              {counts && counts[tab.id] !== undefined && <span className="role-tab__count">{numberFmt.format(counts[tab.id])}</span>}
             </button>
           );
         })}

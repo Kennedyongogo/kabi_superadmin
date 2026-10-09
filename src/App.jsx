@@ -4,6 +4,8 @@ import { clearSession, loadSession, saveSession } from "./auth.js";
 import AppShell from "./layout/AppShell.jsx";
 import Login from "./pages/Login/Login.jsx";
 import Home from "./pages/Home.jsx";
+import Shops from "./pages/Shops.jsx";
+import ShopDetails from "./pages/ShopDetails.jsx";
 import Users from "./pages/Users.jsx";
 import Settings from "./pages/Settings.jsx";
 
@@ -46,6 +48,8 @@ export default function App() {
           }
         >
           <Route index element={<Home />} />
+          <Route path="shops" element={<Shops />} />
+          <Route path="shops/:id" element={<ShopDetails />} />
           <Route path="users" element={<Users />} />
           <Route path="settings" element={<Settings />} />
         </Route>
