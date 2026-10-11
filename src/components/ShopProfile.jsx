@@ -55,7 +55,14 @@ export default function ShopProfile({ shop, actions, owner, compact = false }) {
   const contacts = [
     shop.phone && { label: "Phone", value: shop.phone, href: telUrl(shop.phone), icon: <PhoneIcon /> },
     shop.alt_phone && { label: "Alternative phone", value: shop.alt_phone, href: telUrl(shop.alt_phone), icon: <PhoneIcon /> },
-    shop.whatsapp && { label: "WhatsApp", value: shop.whatsapp, href: whatsappUrl(shop.whatsapp), icon: <ChatIcon />, external: true },
+    shop.whatsapp && {
+      label: "WhatsApp",
+      value: shop.whatsapp,
+      href: whatsappUrl(shop.whatsapp),
+      icon: <SocialIcon id="whatsapp" size={17} />,
+      iconClass: "is-whatsapp",
+      external: true,
+    },
     shop.email && { label: "Email", value: shop.email, href: `mailto:${shop.email}`, icon: <MailIcon /> },
     shop.website && {
       label: "Website",
@@ -152,6 +159,8 @@ export default function ShopProfile({ shop, actions, owner, compact = false }) {
               <p className="sp-empty">No social media handles yet.</p>
             )}
           </section>
+
+          <DeliveryCard conditions={shop.delivery_conditions ?? []} />
         </div>
 
         <div className="sp-col">
@@ -197,7 +206,7 @@ export default function ShopProfile({ shop, actions, owner, compact = false }) {
             <ul className="sp-list">
               {contacts.map((contact) => (
                 <li key={contact.label}>
-                  <span className="sp-list__icon">{contact.icon}</span>
+                  <span className={`sp-list__icon${contact.iconClass ? ` ${contact.iconClass}` : ""}`}>{contact.icon}</span>
                   <span className="sp-list__text">
                     <small>{contact.label}</small>
                     <a href={contact.href} {...(contact.external ? { target: "_blank", rel: "noreferrer" } : {})}>
@@ -250,6 +259,34 @@ export default function ShopProfile({ shop, actions, owner, compact = false }) {
   );
 }
 
+function DeliveryCard({ conditions }) {
+  return (
+    <section className="sp-card sp-delivery">
+      <h3 className="sp-card__title">
+        <span className="sp-delivery__badge" aria-hidden="true">
+          <TruckIcon />
+        </span>
+        Delivery conditions
+        {conditions.length > 0 && <span className="sp-delivery__count">{conditions.length}</span>}
+      </h3>
+      {conditions.length ? (
+        <ol className="sp-delivery__list">
+          {conditions.map((condition, index) => (
+            <li key={`${index}-${condition}`}>
+              <span className="sp-delivery__num" aria-hidden="true">
+                {index + 1}
+              </span>
+              <span>{condition}</span>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p className="sp-empty">No delivery conditions yet.</p>
+      )}
+    </section>
+  );
+}
+
 function OpeningHoursCard({ hours }) {
   const todayId = WEEK_DAYS[(new Date().getDay() + 6) % 7].id;
   return (
@@ -292,15 +329,6 @@ function PhoneIcon() {
   return (
     <svg {...svgProps}>
       <path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 0 0 6.5 6.5l1.5-2 4 1.5V19a1.5 1.5 0 0 1-1.6 1.5A16 16 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4Z" />
-    </svg>
-  );
-}
-
-function ChatIcon() {
-  return (
-    <svg {...svgProps}>
-      <path d="M4.5 19.5 5.6 16A8 8 0 1 1 8 18.4l-3.5 1.1Z" />
-      <path d="M9.5 9.5c.3 2 1.8 3.7 4 4.3l1-1 1.5.8" />
     </svg>
   );
 }
@@ -354,6 +382,16 @@ function CheckIcon() {
   return (
     <svg {...svgProps} width={14} height={14} strokeWidth={2.4}>
       <path d="m5 12.5 4.5 4.5L19 7.5" />
+    </svg>
+  );
+}
+
+function TruckIcon() {
+  return (
+    <svg {...svgProps} width={16} height={16}>
+      <path d="M3 6.5h11v9H3zM14 9.5h3.5L21 13v2.5h-7" />
+      <circle cx="7" cy="17.5" r="1.8" />
+      <circle cx="17" cy="17.5" r="1.8" />
     </svg>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useOutletContext, useParams } from "react-router-dom";
 import { api } from "../auth.js";
 import ShopProfile from "../components/ShopProfile.jsx";
+import ShopReviews from "../components/ShopReviews.jsx";
 import "./pages.css";
 import "./Users.css";
 import "./Shops.css";
@@ -62,7 +63,10 @@ export default function ShopDetails() {
           </div>
         </div>
       ) : shop ? (
-        <ShopProfile shop={shop} owner={shop.owner} />
+        <>
+          <ShopProfile shop={shop} owner={shop.owner} />
+          <ShopReviews endpoint={`/api/shops/${shop.id}/reviews`} token={token} shop={shop} />
+        </>
       ) : (
         <div className="shop-details__skeleton" aria-busy="true">
           <div className="sp-hero">

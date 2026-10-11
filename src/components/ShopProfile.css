@@ -279,8 +279,18 @@
   width: 36px;
   height: 36px;
   border-radius: 11px;
-  background: color-mix(in srgb, var(--brand) 12%, #fff);
-  color: var(--brand);
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 6px 14px -8px color-mix(in srgb, var(--brand) 70%, transparent);
+}
+
+.sp-social--instagram .sp-social__icon {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+}
+
+.sp-list__icon.is-whatsapp {
+  background: #25d366;
+  color: #fff;
 }
 
 .sp-social__text {
@@ -304,9 +314,9 @@
 
 .sp-social--facebook { --brand: #1877f2; }
 .sp-social--instagram { --brand: #d62976; }
-.sp-social--x { --brand: #111; }
+.sp-social--x { --brand: #000; }
 .sp-social--tiktok { --brand: #010101; }
-.sp-social--youtube { --brand: #e62117; }
+.sp-social--youtube { --brand: #ff0000; }
 .sp-social--linkedin { --brand: #0a66c2; }
 
 .sp-list {
@@ -464,6 +474,85 @@
   height: 16px;
   margin-right: 4px;
   vertical-align: -3px;
+}
+
+/* ---------- Delivery conditions ---------- */
+
+.sp-delivery {
+  position: relative;
+  overflow: hidden;
+}
+
+.sp-delivery::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ember), #f5b971);
+  content: "";
+}
+
+.sp-delivery .sp-card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sp-delivery__badge {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--ember-wash);
+  color: var(--ember-deep);
+}
+
+.sp-delivery__count {
+  margin-left: auto;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  letter-spacing: 0;
+}
+
+.sp-delivery__list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sp-delivery__list li {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 9px 0;
+  color: var(--ink);
+  font-size: 14.5px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.sp-delivery__list li + li {
+  border-top: 1px dashed var(--line);
+}
+
+.sp-delivery__num {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-top: -1px;
+  border: 1.5px solid var(--ember);
+  border-radius: 50%;
+  color: var(--ember-deep);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 /* ---------- Location ---------- */
