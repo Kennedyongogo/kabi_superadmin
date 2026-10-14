@@ -7,6 +7,7 @@ import Home from "./pages/Home.jsx";
 import Shops from "./pages/Shops.jsx";
 import ShopDetails from "./pages/ShopDetails.jsx";
 import Users from "./pages/Users.jsx";
+import Riders from "./pages/Riders.jsx";
 import Settings from "./pages/Settings.jsx";
 
 export default function App() {
@@ -51,6 +52,7 @@ export default function App() {
           <Route path="shops" element={<Shops />} />
           <Route path="shops/:id" element={<ShopDetails />} />
           <Route path="users" element={<Users />} />
+          <Route path="riders" element={<Riders />} />
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

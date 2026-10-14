@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { to: "/", label: "Home", icon: <HomeIcon />, end: true },
   { to: "/shops", label: "Shops", icon: <ShopIcon /> },
   { to: "/users", label: "Users", icon: <UsersIcon /> },
+  { to: "/riders", label: "Riders", icon: <RiderIcon /> },
   { to: "/settings", label: "Settings", icon: <SettingsIcon /> },
 ];
 
@@ -210,6 +211,16 @@ function UsersIcon() {
       <circle cx="9" cy="8" r="3.5" />
       <path d="M2.5 20a6.5 6.5 0 0 1 13 0" />
       <path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2a6.5 6.5 0 0 1 3.5 5.8" />
+    </svg>
+  );
+}
+
+function RiderIcon() {
+  return (
+    <svg {...svgProps}>
+      <circle cx="6" cy="17" r="3" />
+      <circle cx="18" cy="17" r="3" />
+      <path d="M6 17h5l3-6h3l1 6M9 8h3l2 3" />
     </svg>
   );
 }

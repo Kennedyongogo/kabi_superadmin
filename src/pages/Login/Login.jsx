@@ -25,7 +25,7 @@ const SLIDES = [
     widget: "shops",
     eyebrow: "Water refills",
     title: "Clean water, right on time.",
-    caption: "Manage refill stock, prices and riders without leaving the dashboard.",
+    caption: "Manage products, prices and riders without leaving the dashboard.",
   },
   {
     image: "/images/food.jpg",
